@@ -114,7 +114,7 @@ pipeline {
      }
     }
     cleanup {
-      cleanWs(notFailBuild: true, cleanWhenFailure: false, cleanWhenNotBuilt: false, cleanWhenUnstable: false)
+      cleanWs(notFailBuild: true, cleanWhenFailure: true, cleanWhenNotBuilt: false, cleanWhenUnstable: false)
     }
   }
 }
