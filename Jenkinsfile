@@ -5,11 +5,17 @@ pipeline {
       image 'bitsydarel/flutter-ci:latest'
     }
   }
+  options {
+    skipDefaultCheckout true
+  }
 
   stages {
     stage("Initialize CI/CD") {
       steps {
+        sh 'ls -l'
+        deleteDir()
         sh 'alias fastlane="bundle exec fastlane"'
+        checkout scm
       }
     }
     stage("Code style check") {
