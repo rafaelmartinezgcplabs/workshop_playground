@@ -2,7 +2,8 @@ pipeline {
   agent {
     docker {
       alwaysPull true
-      image "bitsydarel/flutter-ci:latest"
+      args '-u root'
+      image 'bitsydarel/flutter-ci:latest'
     }
   }
 
