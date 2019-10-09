@@ -3,6 +3,7 @@ pipeline {
     docker {
       alwaysPull true
       image 'bitsydarel/flutter-ci:latest'
+      args '-u root'
     }
   }
 
