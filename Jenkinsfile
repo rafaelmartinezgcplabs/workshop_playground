@@ -51,7 +51,7 @@ pipeline {
           }
           steps {
             sh "launch_android_emulator.sh"
-            sh "flutter drive --release --target=test_driver/app.dart"
+            sh "flutter drive --profile --target=test_driver/app.dart"
           }
         }
       }
