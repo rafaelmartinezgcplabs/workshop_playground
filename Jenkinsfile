@@ -65,14 +65,14 @@ pipeline {
       parallel {
         stage("Build For QA For Android") {
           steps {
-            sh "cd android && bundle update && cd ../"
+            sh "cd android && bundle install --path vendor/bundle && cd ../"
             sh "flutter build apk --debug"
             sh "cd android && echo 'fastlane <name of the lane>'"
           }
         }
         stage("Build For Debug For iOS") {
           steps {
-            sh "cd ios && bundle update && cd ../"
+            sh "cd ios && bundle install --path vendor/bundle && cd ../"
             sh "flutter build ios --debug --no-codesign"
             sh "cd ios && echo 'fastlane <name of the lane>'"
           }
@@ -88,14 +88,14 @@ pipeline {
       parallel {
         stage("Build For Release For Android") {
           steps {
-            sh "cd android && bundle update && cd ../"
+            sh "cd android && bundle install --path vendor/bundle && cd ../"
             sh "flutter build apk --release"
             sh "cd android && echo 'fastlane <name of the lane>'"
           }
         }
         stage("Build For Release For iOS") {
           steps {
-            sh "cd ios && bundle update && cd ../"
+            sh "cd ios && bundle install --path vendor/bundle && cd ../"
             sh "flutter build ios --release --no-codesign"
             sh "cd ios && echo 'fastlane <name of the lane>'"
           }
