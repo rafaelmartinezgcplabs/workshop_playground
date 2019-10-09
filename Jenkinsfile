@@ -29,74 +29,76 @@ pipeline {
         sh "flutter test --coverage --coverage-path lcov.info"
       }
     }
-    stage("Development Integration tests") {
+    stage("Integration Tests") {
+      parallel {
+        stage("Development Integration tests") {
+          when {
+            expression {
+              env.CHANGE_ID != null
+            }
+          }
+          steps {
+            sh "launch_android_emulator.sh"
+            sh "flutter drive --debug --target=test_driver/app.dart"
+          }
+        }
+        stage("Release Integration tests") {
+          when {
+            expression {
+              env.CHANGE_ID == null
+            }
+          }
+          steps {
+            sh "launch_android_emulator.sh"
+            sh "flutter drive --release --target=test_driver/app.dart"
+          }
+        }
+      }
+    }
+    stage("Release QA") {
       when {
         expression {
           env.CHANGE_ID != null
         }
       }
-      steps {
-        sh "launch_android_emulator.sh"
-        sh "flutter drive --debug --target=test_driver/app.dart"
+      parallel {
+        stage("Build For QA For Android") {
+          steps {
+            sh "cd android && bundle update && cd ../"
+            sh "flutter build apk --debug"
+            sh "cd android && echo 'fastlane <name of the lane>'"
+          }
+        }
+        stage("Build For Debug For iOS") {
+          steps {
+            sh "cd ios && bundle update && cd ../"
+            sh "flutter build ios --debug --no-codesign"
+            sh "cd ios && echo 'fastlane <name of the lane>'"
+          }
+        }
       }
     }
-    stage("Release Integration tests") {
+    stage("Release Live") {
       when {
         expression {
           env.CHANGE_ID == null
         }
       }
-      steps {
-        sh "launch_android_emulator.sh"
-        sh "flutter drive --release --target=test_driver/app.dart"
-      }
-    }
-    stage("Build For QA For Android") {
-      when {
-        expression {
-          env.CHANGE_ID != null
+      parallel {
+        stage("Build For Release For Android") {
+          steps {
+            sh "cd android && bundle update && cd ../"
+            sh "flutter build apk --release"
+            sh "cd android && echo 'fastlane <name of the lane>'"
+          }
         }
-      }
-      steps {
-        sh "cd android && bundle update && cd ../"
-        sh "flutter build apk --debug"
-        sh "cd android && echo 'fastlane <name of the lane>'"
-      }
-    }
-    stage("Build For Debug For iOS") {
-      when {
-        expression {
-          env.CHANGE_ID != null
+        stage("Build For Release For iOS") {
+          steps {
+            sh "cd ios && bundle update && cd ../"
+            sh "flutter build ios --release --no-codesign"
+            sh "cd ios && echo 'fastlane <name of the lane>'"
+          }
         }
-      }
-      steps {
-        sh "cd ios && bundle update && cd ../"
-        sh "flutter build ios --debug --no-codesign"
-        sh "cd ios && echo 'fastlane <name of the lane>'"
-      }
-    }
-    stage("Build For Release For Android") {
-      when {
-        expression {
-          env.CHANGE_ID == null
-        }
-      }
-      steps {
-        sh "cd android && bundle update && cd ../"
-        sh "flutter build apk --release"
-        sh "cd android && echo 'fastlane <name of the lane>'"
-      }
-    }
-    stage("Build For Release For iOS") {
-      when {
-        expression {
-          env.CHANGE_ID == null
-        }
-      }
-      steps {
-        sh "cd ios && bundle update && cd ../"
-        sh "flutter build ios --release --no-codesign"
-        sh "cd ios && echo 'fastlane <name of the lane>'"
       }
     }
   }
