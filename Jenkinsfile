@@ -11,6 +11,7 @@ pipeline {
     stage("Initialize CI/CD") {
       steps {
         sh 'alias fastlane="bundle exec fastlane"'
+        sh 'flutter doctor -v'
       }
     }
     stage("Code style check") {
