@@ -11,7 +11,7 @@ pipeline {
     stage("Initialize CI/CD") {
       steps {
         sh 'alias fastlane="bundle exec fastlane"'
-        sh 'flutter precache'
+        sh 'flutter -v precache'
         sh 'flutter doctor -v'
       }
     }
@@ -42,7 +42,7 @@ pipeline {
           }
           steps {
             sh "launch_android_emulator.sh"
-            sh "flutter drive --debug --target=test_driver/app.dart"
+            sh "flutter -v drive --debug --target=test_driver/app.dart"
           }
         }
         stage("Release Integration tests") {
@@ -53,7 +53,7 @@ pipeline {
           }
           steps {
             sh "launch_android_emulator.sh"
-            sh "flutter drive --debug --target=test_driver/app.dart"
+            sh "flutter -v drive --debug --target=test_driver/app.dart"
           }
         }
       }
@@ -68,14 +68,14 @@ pipeline {
         stage("Build For QA For Android") {
           steps {
             sh "cd android && bundle install --path vendor/bundle && cd ../"
-            sh "flutter build apk --debug"
+            sh "flutter -v build apk --debug"
             sh "cd android && echo 'fastlane <name of the lane>'"
           }
         }
         stage("Build For Debug For iOS") {
           steps {
             sh "cd ios && bundle install --path vendor/bundle && cd ../"
-            sh "flutter build ios --debug --no-codesign"
+            sh "flutter -v build ios --debug --no-codesign"
             sh "cd ios && echo 'fastlane <name of the lane>'"
           }
         }
@@ -91,14 +91,14 @@ pipeline {
         stage("Build For Release For Android") {
           steps {
             sh "cd android && bundle install --path vendor/bundle && cd ../"
-            sh "flutter build apk --release"
+            sh "flutter -v build apk --release"
             sh "cd android && echo 'fastlane <name of the lane>'"
           }
         }
         stage("Build For Release For iOS") {
           steps {
             sh "cd ios && bundle install --path vendor/bundle && cd ../"
-            sh "flutter build ios --release --no-codesign"
+            sh "flutter -v build ios --release --no-codesign"
             sh "cd ios && echo 'fastlane <name of the lane>'"
           }
         }
