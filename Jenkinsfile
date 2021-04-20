@@ -1,12 +1,12 @@
 pipeline {
-  agent {
+/*  agent {
     docker {
       alwaysPull true
       image 'bitsydarel/flutter-ci:latest'
       args '-u root'
     }
   }
-
+*/  
   stages {
     stage("Initialize CI/CD") {
       steps {
