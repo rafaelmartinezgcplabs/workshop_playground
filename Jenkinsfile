@@ -1,5 +1,16 @@
 pipeline {
-/*  agent {
+  agent any
+  stages {
+    stage ('Initialize') {
+      steps {
+        echo 'Placeholder.'
+      }
+    }
+  }
+}
+/*
+pipeline {
+  agent {
     docker {
       alwaysPull true
       image 'bitsydarel/flutter-ci:latest'
@@ -7,6 +18,7 @@ pipeline {
     }
   }
 */
+ /*
 agent any
   stages {
     stage ('Initialize') {
@@ -15,6 +27,7 @@ agent any
       }
     }
   }
+  */
   stages {
     stage("Initialize CI/CD") {
       steps {
