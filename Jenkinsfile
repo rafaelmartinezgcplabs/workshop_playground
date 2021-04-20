@@ -1,14 +1,4 @@
 pipeline {
-  agent any
-  stages {
-    stage ('Initialize') {
-      steps {
-        echo 'Placeholder.'
-      }
-    }
-  }
-/*
-pipeline {
   agent {
     docker {
       alwaysPull true
@@ -16,17 +6,6 @@ pipeline {
       args '-u root'
     }
   }
-*/
- /*
-agent any
-  stages {
-    stage ('Initialize') {
-      steps {
-        echo 'Placeholder.'
-      }
-    }
-  }
-  */
   stages {
     stage("Initialize CI/CD") {
       steps {
